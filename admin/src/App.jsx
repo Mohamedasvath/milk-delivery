@@ -4,7 +4,7 @@ import { AnimatePresence } from "framer-motion";
 
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
-import ForgotPin from "./pages/auth/ForgotPin";
+import ForgotPin from "./pages/auth/Forgotpin";
 import Dashboard from "./pages/Dashboard";
 import Customers from "./pages/Customer";
 import MilkEntry from "./pages/MilkEntry";
