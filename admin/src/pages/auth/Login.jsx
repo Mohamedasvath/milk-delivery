@@ -40,7 +40,7 @@ export default function Login() {
       const finalId = ownerData.ownerId || ownerData._id || ownerData.id;
       if (finalId) {
         localStorage.setItem("ownerId", finalId);
-        window.location.href = "/dashboard";
+        navigate("/dashboard"); // Using navigate instead of window.location
       } else {
         toast.error("Error: Owner ID missing.");
       }
@@ -52,7 +52,6 @@ export default function Login() {
   return (
     <div className="min-h-screen w-screen flex bg-white font-sans antialiased overflow-hidden relative">
       <Toaster position="top-right" />
-
       <div className="w-full flex flex-col md:flex-row min-h-screen">
         {/* LEFT PANEL */}
         <div className="w-full md:w-1/2 bg-blue-900 p-8 sm:p-12 lg:p-16 flex flex-col justify-between relative min-h-[40vh] md:min-h-screen z-20">
@@ -85,13 +84,34 @@ export default function Login() {
                   <p className="text-sm text-slate-400 font-medium">Enter your credentials to access the system.</p>
                 </div>
                 <div className="space-y-4">
+                  {/* Phone Input: Optimized for Mobile */}
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400"><Phone size={18} /></div>
-                    <input type="text" required maxLength={10} placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))} className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-800 outline-none transition-all shadow-sm" />
+                    <input 
+                      type="tel" 
+                      inputMode="numeric" 
+                      pattern="[0-9]*" 
+                      required 
+                      maxLength={10} 
+                      placeholder="Phone Number" 
+                      value={phone} 
+                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))} 
+                      className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-800 outline-none transition-all shadow-sm" 
+                    />
                   </div>
+                  {/* PIN Input: Optimized for Numeric */}
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400"><Lock size={18} /></div>
-                    <input type={showPin ? "text" : "password"} required placeholder="Security PIN" value={pin} onChange={(e) => setPin(e.target.value)} className="w-full pl-12 pr-12 py-4 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-800 outline-none transition-all shadow-sm" />
+                    <input 
+                      type={showPin ? "text" : "password"} 
+                      inputMode="numeric" 
+                      pattern="[0-9]*" 
+                      required 
+                      placeholder="Security PIN" 
+                      value={pin} 
+                      onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))} 
+                      className="w-full pl-12 pr-12 py-4 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-800 outline-none transition-all shadow-sm" 
+                    />
                     <button type="button" onClick={() => setShowPin(!showPin)} className="absolute inset-y-0 right-4 flex items-center text-slate-400">
                       {showPin ? <Eye size={18} /> : <EyeOff size={18} />}
                     </button>
@@ -100,11 +120,6 @@ export default function Login() {
                 <button type="submit" disabled={loading} className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] text-white font-black text-xs uppercase shadow-lg transition-all hover:opacity-90">
                   {loading ? <RefreshCw className="animate-spin mx-auto" /> : "Verify Identity"}
                 </button>
-                <div className="text-center mt-6">
-                  <p className="text-xs font-medium text-slate-500">
-                    Don't have an account? <button type="button" onClick={() => navigate("/signup")} className="text-blue-600 font-black hover:underline">Create one now</button>
-                  </p>
-                </div>
               </motion.form>
             ) : (
               <motion.div key="confirm-box" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full max-w-md mx-auto text-center space-y-8">
