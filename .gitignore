@@ -1,0 +1,97 @@
+# Dependencies
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build folders
+dist/
+build/
+
+# Vite
+.vite/
+
+# Coverage
+coverage/
+
+# Cache
+.cache/
+.parcel-cache/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MongoDB
+mongodb-data/
+
+# Uploads
+uploads/
+temp/
+tmp/
+
+# Generated PDFs
+pdfs/
+invoices/
+reports/
+
+# React Native
+.expo/
+android/app/build/
+ios/build/
+
+# Misc
+*.tgz
+*.zip
+*.rar
+
+# Local Storage Dumps
+*.sqlite
+*.db
+
+# Netlify
+.netlify/
+
+# Vercel
+.vercel/
+
+# Render
+.render/
+
+# Firebase
+.firebase/
+
+# ESLint Cache
+.eslintcache
+
+# npm lock files (optional)
+package-lock.json
+
+# yarn
+yarn.lock
+
+# pnpm
+pnpm-lock.yaml
