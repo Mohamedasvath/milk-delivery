@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Milk, IndianRupee, Users, UserCheck, RefreshCcw, AlertCircle, BarChart3, TrendingUp } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
-import { getDashboardData } from "../api/reportApi";
+import { getDashboardData } from "../api/reportAPI";
 import StatCard from "../components/dashboard/StatCard";
 
 export default function Dashboard() {
