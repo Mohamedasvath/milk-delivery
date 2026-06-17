@@ -19,6 +19,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import axios from "axios";
+import api from "./api";
+
 
 // ── Base URL — adjust if your API is hosted differently ───────────────────────
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
@@ -151,15 +153,12 @@ export const fetchYearRangeReport = async (startYear, endYear) => {
 
 export const getDashboardData = async () => {
   const token = localStorage.getItem("token");
+  
+  if (!token) {
+    throw new Error("No token found. Please login again.");
+  }
 
-  const { data } = await axios.get(
-    `${BASE_URL}/reports/dashboard`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
+  // api instance use pannum pothu header automatic-ah poidum
+  const { data } = await api.get("/reports/dashboard");
   return data;
 };

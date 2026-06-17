@@ -16,17 +16,20 @@ export default function Dashboard() {
       else setLoading(true);
       setError("");
 
-     const response = await getDashboardData();
-
-console.log("Dashboard Response:", response);
-
-setData(
-  response?.data?.data ||
-  response?.data ||
-  response
-);
+      const response = await getDashboardData();
+      
+      // Axios puts the server response in .data. 
+      // If your API returns { success: true, data: { ... } }, 
+      // then response.data.data is the correct path.
+      console.log("API Response:", response);
+      
+      // FIX: Set the state directly to the object containing your fields (milk, amount, etc)
+      setData(response.data || response); 
+      
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to fetch dashboard data.");
+      // Improve error logging to see exactly why it fails in production
+      console.error("Dashboard Fetch Error:", err);
+      setError(err.message || "Failed to fetch dashboard data.");
     } finally {
       setLoading(false);
       setIsRefreshing(false);
