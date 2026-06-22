@@ -58,7 +58,6 @@ export default function MilkEntries() {
     }
   };
 
-  // Fixed: fully synchronized handleInputChange for both desktop and mobile modal
   const handleInputChange = (customerId, field, value) => {
     setSheetData(prev =>
       prev.map(item =>
@@ -114,7 +113,6 @@ export default function MilkEntries() {
         )
       );
 
-      // After save: clear edit mode and close modal
       setEditingCustomerId(null);
       setSelectedFarmer(null);
     } catch (err) {
@@ -144,6 +142,7 @@ export default function MilkEntries() {
     return matchesName && matchesRate;
   });
 
+  // ── UPDATED METRICS: now also tracks morning & evening totals separately ──
   const metrics = filteredSheet.reduce((acc, curr) => {
     const morning = Number(curr.morningMilk) || 0;
     const evening = Number(curr.eveningMilk) || 0;
@@ -152,10 +151,12 @@ export default function MilkEntries() {
 
     acc.totalMilk += totalMilk;
     acc.totalAmount += totalMilk * rate;
+    acc.totalMorning += morning;
+    acc.totalEvening += evening;
     if (curr.isSaved) acc.savedCount += 1;
 
     return acc;
-  }, { totalMilk: 0, totalAmount: 0, savedCount: 0 });
+  }, { totalMilk: 0, totalAmount: 0, totalMorning: 0, totalEvening: 0, savedCount: 0 });
 
   const remainingCount = filteredSheet.length - metrics.savedCount;
   const displayTodayRate = filteredSheet.length > 0 ? (Number(filteredSheet[0]?.rate) || 40) : 40;
@@ -246,8 +247,10 @@ export default function MilkEntries() {
         </button>
       </div>
 
-      {/* METRIC PERFORMANCE SECTION */}
+      {/* ── METRIC PERFORMANCE SECTION (7 cards: 4 original + 3 new) ── */}
       <div className={`grid grid-cols-2 md:grid-cols-4 gap-3 ${currentTab === "metrics" ? "grid" : "hidden md:grid"}`}>
+
+        {/* ── Original 4 cards ── */}
         <div className="p-4 bg-white border border-slate-200 rounded-xl shadow-xs">
           <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Total Milk Logs</p>
           <h3 className="text-base sm:text-2xl font-bold text-slate-800 mt-1">{filteredSheet.length} Farmers</h3>
@@ -264,6 +267,22 @@ export default function MilkEntries() {
           <p className="text-[10px] font-semibold text-emerald-600 uppercase tracking-wider">Total Revenue</p>
           <h3 className="text-base sm:text-2xl font-extrabold text-emerald-700 mt-1">₹{metrics.totalAmount.toLocaleString("en-IN")}</h3>
         </div>
+
+        {/* ── 3 NEW cards: Morning, Evening, Today's Calculated Amount ── */}
+        <div className="p-4 bg-orange-50/50 border border-orange-100 rounded-xl">
+          <p className="text-[10px] font-semibold text-orange-500 uppercase tracking-wider">☀️ Morning Total</p>
+          <h3 className="text-base sm:text-2xl font-extrabold text-orange-600 mt-1">{metrics.totalMorning.toFixed(1)} <span className="text-xs font-medium">L</span></h3>
+        </div>
+        <div className="p-4 bg-indigo-50/50 border border-indigo-100 rounded-xl">
+          <p className="text-[10px] font-semibold text-indigo-500 uppercase tracking-wider">🌙 Evening Total</p>
+          <h3 className="text-base sm:text-2xl font-extrabold text-indigo-600 mt-1">{metrics.totalEvening.toFixed(1)} <span className="text-xs font-medium">L</span></h3>
+        </div>
+        <div className="p-4 bg-amber-50/50 border border-amber-100 rounded-xl col-span-2 md:col-span-2">
+          <p className="text-[10px] font-semibold text-amber-600 uppercase tracking-wider">💰 Today's Calculated Amount</p>
+          <h3 className="text-base sm:text-2xl font-extrabold text-amber-700 mt-1">₹{metrics.totalAmount.toLocaleString("en-IN")}</h3>
+          <p className="text-[10px] text-amber-500 mt-1">{metrics.totalMorning.toFixed(1)}L (M) + {metrics.totalEvening.toFixed(1)}L (E) = {metrics.totalMilk.toFixed(1)}L total</p>
+        </div>
+
       </div>
 
       {/* FILTER SYSTEM PANEL */}
@@ -447,7 +466,7 @@ export default function MilkEntries() {
         )}
       </div>
 
-      {/* MOBILE BOTTOM MODAL — FULLY FIXED & PRODUCTION READY */}
+      {/* MOBILE BOTTOM MODAL */}
       {selectedFarmer && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 z-50 transition-all">
           <div className="bg-white w-full sm:max-w-md rounded-t-2xl sm:rounded-xl shadow-2xl border border-slate-200 flex flex-col max-h-[92vh] overflow-hidden">
